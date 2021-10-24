@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  title: Book Management App (BMApp)
+  description: Book Management App open api file. The endpoints of BMApp has been defined here.
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8081'
+paths:
+  {}
+components:
+  schemas:
+    NewBookTitleDto:
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        publisher:
+          type: string
+        year:
+          type: integer
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryType'
+    BookTitleDto:
+      allOf:
+        - $ref: '#/components/schemas/NewBookTitleDto'
+      properties:
+        copies:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookTypeCopiesDto'
+    CategoryType:
+      enum:
+        - ACTION
+        - ADVENTURE
+        - BIOGRAPHY
+        - CLASSIC
+        - COOKBOOK
+        - CRIMINAL
+        - DETECTIVE
+        - DRAMA
+        - EDUCATION
+        - ESSEY
+        - FANTASY
+        - GRAPHIC_NOVEL
+        - HISTORICAL
+        - HORROR
+        - MYSTERY
+        - POETRY
+        - ROMANCE
+        - SCIENCE_FICTION
+        - THRILLER
+    BookBindingType:
+      enum:
+        - PAPERBACK
+        - HARD_BACK
+    BookTypeCopiesDto:
+      type: object
+      properties:
+        bookBindingType:
+          $ref: '#/components/schemas/BookBindingType'
+        price:
+          type: number
+        availableCopies:
+          type: integer
+          format: int64
+    NewCopyDto:
+      type: object
+      properties:
+        bookTitleId:
+          type: string
+          format: uuid
+        bookBinding:
+          $ref: '#/components/schemas/BookBindingType'
+    CopyDto:
+      allOf:
+        - '#/components/schemas/NewCopyDto'
+      properties:
+        price:
+          type: number
+
+

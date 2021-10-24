@@ -6,6 +6,9 @@ target/
 !**/src/test/**/build/
 **/out/
 **/build/
+token.txt
+.mvn/**
+generated-sources
 
 ### STS ###
 .apt_generated

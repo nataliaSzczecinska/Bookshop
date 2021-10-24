@@ -1,0 +1,173 @@
+openapi: 3.0.0
+info:
+  title: Book Management App (BMApp)
+  description: Book Management App open api file. The endpoints of BMApp has been defined here.
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8081'
+paths:
+  /bookshop/book-management/v1/books:
+    post:
+      tags:
+        - BookTitle
+      description: Add a new book title
+      operationId: addBookTitle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'book_management_models.yaml#/components/schemas/NewBookTitleDto'
+      responses:
+        201:
+          description: A new book titles has been added
+    get:
+      tags:
+        - BookTitle
+      description: Find book list by given parameters
+      operationId: findBookTitles
+      parameters:
+        - name: titleFragment
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: author
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: year
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: categories
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: 'book_management_models.yaml#/components/schemas/CategoryType'
+      responses:
+        200:
+          description: Book titles have been found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'book_management_models.yaml#/components/schemas/BookTitleDto'
+  /bookshop/book-management/v1/books/{id}:
+    put:
+      tags:
+        - BookTitle
+      description: Update or change book title details
+      operationId: updateBookDetails
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'book_management_models.yaml#/components/schemas/NewBookTitleDto'
+      responses:
+        204:
+          description: Book title has been updated
+          content:
+            application/json:
+              schema:
+                $ref: 'book_management_models.yaml#/components/schemas/BookTitleDto'
+    get:
+      tags:
+        - BookTitle
+      description: Find book by id
+      operationId: findBookTitleById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Book title has been found
+          content:
+            application/json:
+              schema:
+                $ref: 'book_management_models.yaml#/components/schemas/BookTitleDto'
+    patch:
+      tags:
+        - BookTitle
+      description: Change availables copies
+      operationId: changeAvailableCopies
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: copiesInCart
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        204:
+          description: Number of available copies has changed
+  /bookshop/book-management/v1/copies:
+    post:
+      tags:
+        - Copy
+      description: Add a new copy
+      operationId: addNewCopy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'book_management_models.yaml#/components/schemas/NewCopyDto'
+      responses:
+        201:
+          description: A new copy has been added
+    get:
+      tags:
+        - Copy
+      description: Find copies with parameters
+      operationId: findCopies
+      parameters:
+        - name: bookTitleId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: cartId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Copies have been found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'book_management_models.yaml#/components/schemas/CopyDto'
